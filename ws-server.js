@@ -58,6 +58,14 @@ aos.on("close", (code) => {
   console.error("AOS process exited with code", code);
 });
 
+// Load the token blueprint when AOS process starts
+aos.stdout.once('data', () => {
+  console.log('AOS process started, loading token blueprint...');
+  setTimeout(() => {
+    aos.stdin.write('.load-blueprint token\n');
+    console.log('Sent to aos: .load-blueprint token');
+  }, 2000); // Wait 2 seconds for AOS to be ready
+});
 const wss = new WebSocket.Server({ port: 8080 });
 
 wss.on("connection", (ws) => {
